@@ -6,8 +6,7 @@
   "scripts": {
     "server": "nodemon index.js",
     "start": "node index.js",
-    "test": "cross-env NODE_ENV=test jest --watch",
-    "pretest": "cross-env NODE_ENV=test knex run migrate:reset"
+    "test": "cross-env NODE_ENV=test jest --watch"
   },
   "repository": {
     "type": "git",
