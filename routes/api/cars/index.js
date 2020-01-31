@@ -14,6 +14,16 @@ router.get('/', async (req, res) => {
   res.status(200).json(carArray)
 })
 
+router.get('/:id', async (req, res) => {
+  const car = await db.getCarById(req.params.id)
+  res.json(car)
+})
+
+router.put('/:id', async (req, res) => {
+  const updatedCar = await db.editCar(req.params.id, req.body)
+  res.json(updatedCar)
+})
+
 router.delete('/:id', async (req, res) => {
   res.json(await db.deleteCar(req.params.id))
 })
