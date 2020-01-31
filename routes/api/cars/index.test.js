@@ -61,17 +61,43 @@ describe('api/cars', () => {
   })
 
   describe('GET /', () => {
-    beforeEach(() => db.seed.run())
+    test('returns 200 OK and full car array (100 cars)', async () => {
+      await db.seed.run()
 
-    test('returns 200 OK', async () => {
       const res = await request(server).get('/api/cars')
 
       expect(res.status).toBe(200)
-    })
-    test('returns array of 100 cars', async () => {
-      const res = await request(server).get('/api/cars')
 
       expect(JSON.parse(res.text).length).toBe(100)
+    })
+  })
+
+  describe('DELETE /:id', () => {
+    test('removes the item and returns status 200 OK and the number of rows removed (1)', async () => {
+      await db.seed.run()
+
+      const car = await db('cars')
+        .where('car_id', 100)
+        .first()
+
+      expect(car).toMatchObject({
+        car_id: 100,
+        make: 'GMC',
+        model: 'Savana',
+        year: 2009,
+      })
+
+      const res = await request(server).delete('/api/cars/100')
+
+      expect(res.status).toBe(200)
+
+      expect(JSON.parse(res.text)).toBe(1)
+
+      const deleted = await db('cars')
+        .where('car_id', 100)
+        .first()
+
+      expect(deleted).toBe(undefined)
     })
   })
 })

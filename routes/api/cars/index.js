@@ -14,6 +14,10 @@ router.get('/', async (req, res) => {
   res.status(200).json(carArray)
 })
 
+router.delete('/:id', async (req, res) => {
+  res.json(await db.deleteCar(req.params.id))
+})
+
 router.use((err, req, res, next) =>
   res.status(500).json({ message: 'Uh Oh! 500 Error!', error: err.message })
 )
