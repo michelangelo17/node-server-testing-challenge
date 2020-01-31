@@ -1,16 +1,18 @@
 const router = require('express-promise-router')()
+const { valPOSTBody } = require('./middleware')
 const db = require('./model')
 
 module.exports = router
 
-router.get('/', async (req, res) => {
-  const temp = await db.temp()
-  res.json(temp)
+router.post('/', valPOSTBody, async (req, res) => {
+  const newCar = await db.addCar(req.body)
+  res.status(201).json(newCar)
 })
 
-// if (something) {
-//   throw new Error('')
-// }
+router.get('/', async (req, res) => {
+  const carArray = await db.getCars()
+  res.status(200).json(carArray)
+})
 
 router.use((err, req, res, next) =>
   res.status(500).json({ message: 'Uh Oh! 500 Error!', error: err.message })
